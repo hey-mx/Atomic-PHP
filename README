@@ -8,3 +8,22 @@
     ?>
 
 - You can find an example of the bootstrap.php in the sources. Look into bootstrap.php.sample
+
+- Create a controller
+    <?php
+        class Controller extends AtController {
+
+            public function index() {
+                $name = "Carlos";
+                $this->Display('hello.tpl', array('name' => $name));
+            }
+        }
+    ?>
+
+- Create a template (based on smarty)
+    <html>
+        <head></head>
+        <body>
+            <span>Hello {$name}!!</span>
+        </body>
+    </html>
