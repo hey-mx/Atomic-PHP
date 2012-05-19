@@ -1,0 +1,10 @@
+- Create the index.php root path of the website:
+
+    <?php
+        session_start();
+        require '/web/atomic/Atomic.php';
+        $app = Atomic::getInstance('bootstrap.php');
+        $app->run();
+    ?>
+
+- You can find an example of the bootstrap.php in the sources. Look in bootstrap.php.sample
