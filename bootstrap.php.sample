@@ -1,0 +1,33 @@
+<?php
+ini_set('display_errors', 1);
+/**************** DB CONFIGURATION *************************/
+$db['development'] = 'mysql://user:password@localhost/mydb;charset=utf8';
+
+/**************** SYSTEM CONFIGURATION ********************/
+$system['template_path'] = '/path/siteweb/sources/templates';
+$system['template_c'] = '/path/siteweb/sources/template_c';
+$system['module_path'] = '/path/siteweb/sources/modules'; //Controller dir
+$system['model_path'] = '/path/siteweb/sources/models';
+$system['core_path'] = '/path/atomic/core';
+$system['lib_path'] = '/path/atomic/lib';
+$system['helpers'] = '/path/siteweb/sources/helpers';
+$system['lang_path'] = '/path/siteweb/sources/lang';
+
+
+$system['default_module'] = 'MyController';
+
+/********** Routes ********/
+$system['routes'] = array(
+    '/route1' => array(
+        'content' => 'MyController1',
+        'action' => 'index',
+    ),
+    '/route2/:value' => array(
+        'content' => 'MyController2',
+        'action' => 'find',
+        'dynamic' => array(
+            ':criterio' => '^.*$'
+        )
+    )
+);
+?>
