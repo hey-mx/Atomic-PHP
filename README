@@ -1,4 +1,4 @@
-- Create the index.php root path of the website:
+- Create the index.php in the root path of the website:
 
     <?php
         session_start();
@@ -7,4 +7,4 @@
         $app->run();
     ?>
 
-- You can find an example of the bootstrap.php in the sources. Look in bootstrap.php.sample
+- You can find an example of the bootstrap.php in the sources. Look into bootstrap.php.sample
