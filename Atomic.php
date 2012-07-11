@@ -131,7 +131,7 @@ class Atomic {
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
             try{
-                if(empty($content)) {
+                if(empty($class)) {
                     throw new AtPageNotFoundException("Class Not Found", 1);
                 }
                 $content = new $class;
