@@ -157,7 +157,16 @@ class Atomic {
                     $content->index();
                 }
             } catch(ActiveRecord\DatabaseException $e) {
-                echo "Database Error";
+                echo "Database Error: ";
+            } catch(Exception $e) {
+                if(array_key_exists('NotFoundHandler', self::$system)) {
+                    $class = self::$system['NotFoundHandler'];
+                    $handler = new $class();
+                    $handler->exception($e);
+                } else {
+                    throw new Exception($e->getMessage(), $e->getCode());
+                    
+                }
             }
         } else {
             //TODO Add the 404 action here
