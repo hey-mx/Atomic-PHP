@@ -1,5 +1,5 @@
 <?php
 abstract class NotFoundHandler {
-	abstract public function exception(Exception $e);
+	abstract public function exception(AtPageNotFoundException $e);
 }
 ?>

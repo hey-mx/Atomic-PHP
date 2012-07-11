@@ -131,9 +131,13 @@ class Atomic {
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
             try{
+                if(emoty($content)) {
+                    throw new AtPageNotFoundException("Class Not Found", 1);
+                }
                 $content = new $class;
-                if(!$content instanceof AtController)
-                      throw new Exception('The request is no a valid Content. Nothing to do.');
+                if(!$content instanceof AtController) {
+                      throw new AtPageNotFoundException('The request is no a valid Content. Nothing to do.', 2);
+                }
                 else
                 {
                     $config = Core::getInstance(self::$system);
@@ -151,16 +155,16 @@ class Atomic {
                         }
                     }
                     else {
-                        throw new Exception('Nothing to do.');
+                        throw new AtPageNotFoundException('Action Not Found', 3);
                     }
                 } else {
                     $content->index();
                 }
             } catch(ActiveRecord\DatabaseException $e) {
                 echo "Database Error: ";
-            } catch(Exception $e) {
-                if(array_key_exists('NotFoundHandler', self::$system)) {
-                    $class = self::$system['NotFoundHandler'];
+            } catch(AtPageNotFoundException $e) {
+                if(array_key_exists('PageNotFoundHandler', self::$system)) {
+                    $class = self::$system['PageNotFoundHandler'];
                     $handler = new $class();
                     $handler->exception($e);
                 } else {
