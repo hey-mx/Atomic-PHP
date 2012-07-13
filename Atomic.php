@@ -133,7 +133,7 @@ class Atomic {
             try{
                 try {
                     $content = new $class;
-                } catch {
+                } catch(Exception $ex) {
                     throw new AtPageNotFoundException("Class Not Found", 1);    
                 }
                 if(!$content instanceof AtController) {
