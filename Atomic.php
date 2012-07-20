@@ -125,56 +125,53 @@ class Atomic {
         $this->loadRoutes();
         //Get the route destination
         $url = urldecode($_SERVER['REQUEST_URI']);
-        $foundRoute = $this->router->findRoute($url);
-        if(!empty($foundRoute)) {
+        try{
+            $foundRoute = $this->router->findRoute($url);
+            if(!empty($foundRoute)) {
+                throw new AtPageNotFoundException("Route Not Found", 0);
+            }
             $class = $foundRoute->getMapClass();
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
-            try{
-                if(!class_exists($class)) {
-                    throw new AtPageNotFoundException("Class Not Found", 1);
-                }
-                $content = new $class;
-                if(!$content instanceof AtController) {
-                      throw new AtPageNotFoundException('The request is no a valid Content. Nothing to do.', 2);
-                }
-                else
-                {
-                    $config = Core::getInstance(self::$system);
-                    $content->setConfigInstance($config);
-                }
-                $action = $method;
-                if(!empty($action))
-                {
-                    if(method_exists($content, $action))
-                    {
-                        if(empty($arguments)) {
-                            $content->$action();
-                        } else {
-                            call_user_func(array($content, $action), $arguments);
-                        }
-                    }
-                    else {
-                        throw new AtPageNotFoundException('Action Not Found', 3);
-                    }
-                } else {
-                    $content->index();
-                }
-            } catch(ActiveRecord\DatabaseException $e) {
-                echo "Database Error: ";
-            } catch(AtPageNotFoundException $e) {
-                if(array_key_exists('PageNotFoundHandler', self::$system)) {
-                    $class = self::$system['PageNotFoundHandler'];
-                    $handler = new $class();
-                    $handler->exception($e);
-                } else {
-                    throw new Exception($e->getMessage(), $e->getCode());
-                    
-                }
+            if(!class_exists($class)) {
+                throw new AtPageNotFoundException("Class Not Found", 1);
             }
-        } else {
-            //TODO Add the 404 action here
-            throw new Exception('The page was not found');
+            $content = new $class;
+            if(!$content instanceof AtController) {
+                  throw new AtPageNotFoundException('The request is no a valid Content. Nothing to do.', 2);
+            }
+            else
+            {
+                $config = Core::getInstance(self::$system);
+                $content->setConfigInstance($config);
+            }
+            $action = $method;
+            if(!empty($action))
+            {
+                if(method_exists($content, $action))
+                {
+                    if(empty($arguments)) {
+                        $content->$action();
+                    } else {
+                        call_user_func(array($content, $action), $arguments);
+                    }
+                }
+                else {
+                    throw new AtPageNotFoundException('Action Not Found', 3);
+                }
+            } else {
+                $content->index();
+            }
+        } catch(ActiveRecord\DatabaseException $e) {
+            echo "Database Error: ";
+        } catch(AtPageNotFoundException $e) {
+            if(array_key_exists('PageNotFoundHandler', self::$system)) {
+                $class = self::$system['PageNotFoundHandler'];
+                $handler = new $class();
+                $handler->exception($e);
+            } else {
+                throw new Exception($e->getMessage(), $e->getCode());
+            }
         }
     }
 
