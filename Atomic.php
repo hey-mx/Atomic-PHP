@@ -126,8 +126,9 @@ class Atomic {
         //Get the route destination
         $url = urldecode($_SERVER['REQUEST_URI']);
         try{
-            $foundRoute = $this->router->findRoute($url);
-            if(!empty($foundRoute)) {
+            try {
+                $foundRoute = $this->router->findRoute($url);
+            }catch (RouteNotFoundException $e) {
                 throw new AtPageNotFoundException("Route Not Found", 0);
             }
             $class = $foundRoute->getMapClass();
