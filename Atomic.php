@@ -6,7 +6,11 @@ class Atomic {
 
     public static function autoLoad($className)
     {
-        $paths = array(CORE_PATH, LIB_PATH, MODULE_PATH, MODEL_PATH, HELPERS_PATH, HELPER_CORE_PATH);
+        $paths = array(CORE_PATH, CORE_LIB_PATH, LIB_PATH, MODULE_PATH, 
+            HELPERS_PATH, HELPER_CORE_PATH);
+        if(defined('MODEL_PATH')) {
+            $paths[] = MODEL_PATH;
+        }
         foreach($paths as $path)
         {
             if( is_dir( $path ) ) {
@@ -41,7 +45,7 @@ class Atomic {
 
     public static function activerecord_lib_autoload($class_name)
     {
-        $lib_path = LIB_PATH . DIRECTORY_SEPARATOR . 'activerecord/';
+        $lib_path = CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'activerecord/';
         if (strpos($class_name, 'ActiveRecord') !== FALSE) 
         {
             $class = substr($class_name, strpos($class_name, '\\')+1);
@@ -61,30 +65,35 @@ class Atomic {
             define('MODEL_PATH', $system['model_path']);
         }
         define('TEMPLATE_PATH', $system['template_path']);
-        define('CORE_PATH', $system['core_path']);
+        define('CORE_PATH', $system['core_path'] . 
+            DIRECTORY_SEPARATOR . 'core');
+        define('CORE_LIB_PATH', $system['core_path'] . 
+            DIRECTORY_SEPARATOR . 'lib');
         define('LIB_PATH', $system['lib_path']);
         define('HELPERS_PATH', $system['helpers']);
-        define('HELPER_CORE_PATH', CORE_PATH . DIRECTORY_SEPARATOR . '..' .
+        define('HELPER_CORE_PATH',  $system['core_path'] . 
             DIRECTORY_SEPARATOR . 'helpers');
         self::$system = $system;
         spl_autoload_register("Atomic::autoLoad");
         spl_autoload_register("Atomic::activerecord_lib_autoload");
         if(isset($db) && defined('MODEL_PATH')) {
-            $lib_path = LIB_PATH . DIRECTORY_SEPARATOR . 'activerecord/';
+            $lib_path = CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'activerecord/';
             require_once $lib_path . 'Utils.php';
             require_once $lib_path . 'Exceptions.php';
             $cfgAR = ActiveRecord\Config::instance();
             try {
-            $cfgAR->set_connections($db);
+                $cfgAR->set_connections($db);
             } catch(ActiveRecord\DatabaseException $e) {
                 echo "Database Error: " . $e->getMessage();
             }
             $cfgAR->set_model_directory(MODEL_PATH);
         }
-        set_include_path(get_include_path() . PATH_SEPARATOR . LIB_PATH);
     }
 
     private function loadRoutes() {
+        if(array_key_exists('router', self::$system)) {
+            require_once self::$system['router'];
+        }
         $this->router = new Router;
         $rootRoute = new Route('/');
         $rootRoute->setMapClass(self::$system['default_module'])
