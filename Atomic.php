@@ -93,6 +93,8 @@ class Atomic {
     private function loadRoutes() {
         if(array_key_exists('router', self::$system)) {
             require_once self::$system['router'];
+            if(array_key_exists('routes', $system))
+                self::$system['routes'] = $system['routes'];
         }
         $this->router = new Router;
         $rootRoute = new Route('/');
