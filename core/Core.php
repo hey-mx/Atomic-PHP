@@ -1,7 +1,7 @@
 <?php
 class Core
 {
-    static private $coreInstance = null;
+    private static $coreInstance = null;
     private $configValues = array();
     private function  __construct($systemInfo) {
         $this->readConfig($systemInfo);
@@ -24,9 +24,9 @@ class Core
         }
         return NULL;
     }
-    static public function getInstance($systemInfo)
+    public static function getInstance($systemInfo)
     {
-        if(empty(self::$coreInstances))
+        if(empty(self::$coreInstance))
         {
             self::$coreInstance = new Core($systemInfo);
         }

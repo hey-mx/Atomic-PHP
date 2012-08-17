@@ -3,6 +3,7 @@ class Atomic {
     private static $PhpPhantInstance;
     private $router;
     private static $system;
+    private $config;
 
     public static function autoLoad($className)
     {
@@ -88,6 +89,7 @@ class Atomic {
             }
             $cfgAR->set_model_directory(MODEL_PATH);
         }
+        $this->config = Core::getInstance(self::$system);
     }
 
     private function loadRoutes() {
@@ -154,8 +156,7 @@ class Atomic {
             }
             else
             {
-                $config = Core::getInstance(self::$system);
-                $content->setConfigInstance($config);
+                $content->setConfigInstance($this->config);
             }
             $action = $method;
             if(!empty($action))
@@ -185,6 +186,10 @@ class Atomic {
                 throw new Exception($e->getMessage(), $e->getCode());
             }
         }
+    }
+
+    public function GetConfig() {
+        return $this->config;
     }
 
     public static function getInstance($bootstrap)
