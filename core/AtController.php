@@ -61,7 +61,5 @@ abstract class AtController
         if(array_key_exists($name, $this->helpers))
             return $this->helpers[$name];
     }
-
-    abstract public function index();
 }
 ?>

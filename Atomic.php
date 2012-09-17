@@ -184,7 +184,9 @@ class Atomic {
                     throw new AtPageNotFoundException('Action Not Found', 3);
                 }
             } else {
-                $content->index();
+                $action = (!isset(self::$system['action_prefix']) ? '' : 
+                self::$system['action_prefix']) . index;
+                $content->$action();
             }
         } catch(ActiveRecord\DatabaseException $e) {
             if(array_key_exists('DatabaseErrorHandler', self::$system)) {
