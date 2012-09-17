@@ -159,7 +159,9 @@ class Atomic {
             {
                 $content->setConfigInstance($this->config);
             }
-            $action = $method;
+
+            $action = (!isset($system['action_prefix']) ? '' : 
+                $system['action_prefix']) . $method;
             if(!empty($action))
             {
                 if(method_exists($content, $action))
@@ -177,7 +179,13 @@ class Atomic {
                 $content->index();
             }
         } catch(ActiveRecord\DatabaseException $e) {
-            echo "Database Error: ";
+            if(array_key_exists('DatabaseErrorHandler', self::$system)) {
+                $class = self::$system['DatabaseErrorHandler'];
+                $handler = new $class();
+                $handler->exception($e);
+            } else {
+                echo "Database Error";
+            }
         } catch(AtPageNotFoundException $e) {
             if(array_key_exists('PageNotFoundHandler', self::$system)) {
                 $class = self::$system['PageNotFoundHandler'];
