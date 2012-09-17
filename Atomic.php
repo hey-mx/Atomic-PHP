@@ -169,7 +169,7 @@ class Atomic {
             }
 
             $action = (!isset(self::$system['action_prefix']) ? '' : 
-                self::$system$system['action_prefix']) . $method;
+                self::$system['action_prefix']) . $method;
             if(!empty($action))
             {
                 if(method_exists($content, $action))
