@@ -168,8 +168,8 @@ class Atomic {
                 $content->setConfigInstance($this->config);
             }
 
-            $action = (!isset($system['action_prefix']) ? '' : 
-                $system['action_prefix']) . $method;
+            $action = (!isset(self::$system['action_prefix']) ? '' : 
+                self::$system$system['action_prefix']) . $method;
             if(!empty($action))
             {
                 if(method_exists($content, $action))
