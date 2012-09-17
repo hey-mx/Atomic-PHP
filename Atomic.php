@@ -1,9 +1,11 @@
 <?php
 class Atomic {
+    
     private static $PhpPhantInstance;
     private $router;
     private static $system;
     private $config;
+    private $cfgAR;
 
     public static function autoLoad($className)
     {
@@ -81,13 +83,19 @@ class Atomic {
             $lib_path = CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'activerecord/';
             require_once $lib_path . 'Utils.php';
             require_once $lib_path . 'Exceptions.php';
-            $cfgAR = ActiveRecord\Config::instance();
+            $this->cfgAR = ActiveRecord\Config::instance();
             try {
-                $cfgAR->set_connections($db);
+                $this->cfgAR->set_connections($db);
             } catch(ActiveRecord\DatabaseException $e) {
-                echo "Database Error: " . $e->getMessage();
+                if(array_key_exists('DatabaseErrorHandler', self::$system)) {
+                    $class = self::$system['DatabaseErrorHandler'];
+                    $handler = new $class();
+                    $handler->exceptionTrigger($this->cfgAR, $e);
+                } else {
+                    echo "Database Error";
+                }
             }
-            $cfgAR->set_model_directory(MODEL_PATH);
+            $this->cfgAR->set_model_directory(MODEL_PATH);
         }
         $this->config = Core::getInstance(self::$system);
     }
@@ -182,7 +190,7 @@ class Atomic {
             if(array_key_exists('DatabaseErrorHandler', self::$system)) {
                 $class = self::$system['DatabaseErrorHandler'];
                 $handler = new $class();
-                $handler->exception($e);
+                $handler->exceptionTrigger($this->cfgAR, $e);
             } else {
                 echo "Database Error";
             }
