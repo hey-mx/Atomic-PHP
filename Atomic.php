@@ -154,6 +154,8 @@ class Atomic {
                 throw new AtPageNotFoundException("Route Not Found", 0);
             }
             $class = $foundRoute->getMapClass();
+            $class .= (!isset(self::$system['controller_suffix']) ? '' :
+                self::$system['controller_suffix']);
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
             if(!class_exists($class)) {
