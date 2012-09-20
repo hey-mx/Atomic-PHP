@@ -151,6 +151,13 @@ class Atomic {
                 throw new AtPageNotFoundException("Route Not Found", 0);
             }
             $class = $foundRoute->getMapClass();
+            if(strpos($class, '_') !== FALSE) {
+                $elements = explode('_', $class);
+                array_walk($elements, function($key, $value) use (&$elements){
+                    $elements[$key] = ucfirst($elements[$key]);
+                });
+                $class = join('', $elements);
+            }
             $class .= (!isset(self::$system['controller_suffix']) ? '' :
                 self::$system['controller_suffix']);
             $method = $foundRoute->getMapMethod();
@@ -166,7 +173,13 @@ class Atomic {
             {
                 $content->setConfigInstance($this->config);
             }
-
+            if(strpos($method, '_') !== FALSE) {
+                $elements = explode('_', $method);
+                array_walk($elements, function($key, $value) use (&$elements){
+                    $elements[$key] = ucfirst($elements[$key]);
+                });
+                $method = join('', $elements);
+            }
             $action = (!isset(self::$system['action_prefix']) ? '' : 
                 self::$system['action_prefix']) . $method;
             if(!empty($action))
