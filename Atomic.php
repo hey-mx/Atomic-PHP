@@ -157,6 +157,8 @@ class Atomic {
                     $elements[$key] = ucfirst($elements[$key]);
                 });
                 $class = join('', $elements);
+            } else {
+                $class = ucfirst($class);
             }
             $class .= (!isset(self::$system['controller_suffix']) ? '' :
                 self::$system['controller_suffix']);
@@ -179,6 +181,8 @@ class Atomic {
                     $elements[$key] = ucfirst($elements[$key]);
                 });
                 $method = join('', $elements);
+            } else {
+                $method = ucfirst($method);
             }
             $action = (!isset(self::$system['action_prefix']) ? '' : 
                 self::$system['action_prefix']) . $method;
