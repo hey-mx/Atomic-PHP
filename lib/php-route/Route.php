@@ -228,7 +228,7 @@ class Route
                 }
 
                 //Attempt a regular expression match
-                $regexp = '/' . $this->dynamicElements[$this_path_element] . '/';
+                $regexp = '/' . $this->dynamicElements[$this_path_element] . '/i';
                 if( preg_match( $regexp, $match_path_elements[$i] ) > 0 )
                 {
                     //The class and/or method may be getting set dynamically. If so
