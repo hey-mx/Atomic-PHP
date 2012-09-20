@@ -107,11 +107,8 @@ class Atomic {
                 && !empty($system['routes']))
                 self::$system['routes'] = $system['routes'];
         }
-        $this->router = new Router;
-        $rootRoute = new Route('/');
-        $rootRoute->setMapClass(self::$system['default_module'])
-            ->setMapMethod('index');
-        $this->router->addRoute('default', $rootRoute);
+        $this->router = RouterManager::GetInstance($this->config)
+            ->GetPhpRouterInstance();
         if(array_key_exists('routes', self::$system)) {
             $count = 0;
             foreach(self::$system['routes'] as $route => $info) {

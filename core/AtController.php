@@ -4,8 +4,9 @@
  */
 abstract class AtController
 {
-    protected $config = null;
-    private $view = null;
+    protected $config;
+    protected $view;
+    protected $router;
     private $helpers = array();
 
     public function setConfigInstance(Core $config)
@@ -17,6 +18,8 @@ abstract class AtController
     protected function InitModule()
     {
         $this->view = ViewManager::GetInstance($this->config);
+        $this->router = RouterManager::GetInstance($this->config)
+            ->GetPhpRouterInstance();
     }
 
     protected function Display($template, $vars=array(), $display=true)
