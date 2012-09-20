@@ -184,10 +184,11 @@ class Atomic {
             } else {
                 $method = ucfirst($method);
             }
-            $action = (!isset(self::$system['action_prefix']) ? '' : 
-                self::$system['action_prefix']) . $method;
+            $action = $method;
             if(!empty($action))
             {
+                $action = (!isset(self::$system['action_prefix']) ? '' : 
+                    self::$system['action_prefix']) . $action;
                 if(method_exists($content, $action))
                 {
                     if(empty($arguments)) {
