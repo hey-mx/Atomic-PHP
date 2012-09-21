@@ -136,6 +136,11 @@ class Atomic {
         $standardRoute->addDynamicElement(':class', ':class')
             ->addDynamicElement(':method', ':method');
         $this->router->addRoute('standard_class_method', $standardRoute);
+
+        $route = new Route( '/:class/:method/:id' );
+        $route->addDynamicElement( ':class', ':class' )->addDynamicElement( ':method', ':method' )
+              ->addDynamicElement( ':id', ':id' );
+        $this->router->addRoute('standard_class_method_id', $route);
     }
 
     public function run()
