@@ -14,6 +14,12 @@ class Atomic {
         if(defined('MODEL_PATH')) {
             $paths[] = MODEL_PATH;
         }
+        if(defined('CUSTOM_PATHS')) {
+            $customPaths = unserialize(CUSTOM_PATHS);
+            foreach ($customPaths as $key => $path) {
+                $paths[] = $path;
+            }
+        }
         foreach($paths as $path)
         {
             if( is_dir( $path ) ) {
@@ -76,6 +82,9 @@ class Atomic {
         define('HELPERS_PATH', $system['helpers']);
         define('HELPER_CORE_PATH',  $system['core_path'] . 
             DIRECTORY_SEPARATOR . 'helpers');
+        if(isset($system['custom_paths'])) {
+            define('CUSTOM_PATHS', serialize($system['custom_paths']));
+        }
         self::$system = $system;
         spl_autoload_register("Atomic::autoLoad");
         spl_autoload_register("Atomic::activerecord_lib_autoload");
