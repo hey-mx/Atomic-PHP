@@ -40,6 +40,7 @@ abstract class AtController
             $url .= join('/', $arguments);
         }
         header('Location: ' . $url);
+        exit;
     }
 
     protected function LoadHelper($helperName, $accessName)
