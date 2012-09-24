@@ -23,6 +23,10 @@ final class ViewManager {
         if(!empty($templateCache)) {
             $this->smartyInstance->setCacheDir($templateCache);
         }
+        $customPlugins = $configSystem->Value('smarty_plugins');
+        if (!empty($customPlugins)) {
+            $this->smartyInstance->plugins_dir[] = $customPlugins;
+        }
     }
 
     public static function GetInstance(Core $configSystem) {
