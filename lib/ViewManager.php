@@ -25,7 +25,10 @@ final class ViewManager {
         }
         $customPlugins = $configSystem->Value('smarty_plugins');
         if (!empty($customPlugins)) {
-            $this->smartyInstance->plugins_dir[] = $customPlugins;
+            $this->smartyInstance->setPluginsDir(array_merge(
+                $this->smartyInstance->getPluginsDir(),
+                array($customPlugins)
+            ));
         }
     }
 
