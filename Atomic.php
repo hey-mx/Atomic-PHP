@@ -7,51 +7,6 @@ class Atomic {
     private $config;
     private $cfgAR;
 
-    public static function autoLoad($className)
-    {
-        $paths = array(CORE_PATH, CORE_LIB_PATH, LIB_PATH, MODULE_PATH, 
-            HELPERS_PATH, HELPER_CORE_PATH);
-        if(defined('MODEL_PATH')) {
-            $paths[] = MODEL_PATH;
-        }
-        if(defined('CUSTOM_PATHS')) {
-            $customPaths = unserialize(CUSTOM_PATHS);
-            foreach ($customPaths as $key => $path) {
-                $paths[] = $path;
-            }
-        }
-        foreach($paths as $path)
-        {
-            if( is_dir( $path ) ) {
-                $dir = opendir( $path );
-                while( false !== $item = readdir( $dir ) ) {
-                    $current = $path . "/$item";
-                    if( is_dir( $current ) ) {
-                        $file = self::checkFileExists( $current, $className );
-                        if( $file ) {
-                            include_once $file;
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        if($item == $className)
-                        {
-                            include_once $current;
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private static function checkFileExists( $dir_name, $filename )
-    {
-        $file = $dir_name . "/$filename.php";
-        return file_exists( $file ) ? $file : false;
-    }
-
     public static function activerecord_lib_autoload($class_name)
     {
         $lib_path = CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'activerecord/';
@@ -86,7 +41,25 @@ class Atomic {
             define('CUSTOM_PATHS', serialize($system['custom_paths']));
         }
         self::$system = $system;
-        spl_autoload_register("Atomic::autoLoad");
+        require_once CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'PHP-Autoload-Manager'
+            . DIRECTORY_SEPARATOR . 'autoloadManager.php';
+        $autoloadManager = new AutoloadManager();
+        $autoloadManager->addFolder(CORE_PATH);
+        $autoloadManager->addFolder(CORE_LIB_PATH);
+        $autoloadManager->addFolder(LIB_PATH);
+        $autoloadManager->addFolder(MODULE_PATH);
+        $autoloadManager->addFolder(HELPERS_PATH);
+        $autoloadManager->addFolder(HELPER_CORE_PATH);
+        if (defined('MODEL_PATH')) {
+            $autoloadManager->addFolder(MODEL_PATH);
+        }
+        if(defined('CUSTOM_PATHS')) {
+            $customPaths = unserialize(CUSTOM_PATHS);
+            foreach ($customPaths as $key => $path) {
+                $autoloadManager->addFolder($path);
+            }
+        }
+        $autoloadManager->register();
         spl_autoload_register("Atomic::activerecord_lib_autoload");
         if(isset($db) && defined('MODEL_PATH')) {
             $lib_path = CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'activerecord/';
