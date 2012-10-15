@@ -35,8 +35,6 @@ class Atomic {
             DIRECTORY_SEPARATOR . 'lib');
         define('LIB_PATH', $system['lib_path']);
         define('HELPERS_PATH', $system['helpers']);
-        define('HELPER_CORE_PATH',  $system['core_path'] . 
-            DIRECTORY_SEPARATOR . 'helpers');
         if(isset($system['custom_paths'])) {
             define('CUSTOM_PATHS', serialize($system['custom_paths']));
         }
@@ -49,7 +47,6 @@ class Atomic {
         $autoloadManager->addFolder(LIB_PATH);
         $autoloadManager->addFolder(MODULE_PATH);
         $autoloadManager->addFolder(HELPERS_PATH);
-        $autoloadManager->addFolder(HELPER_CORE_PATH);
         if (defined('MODEL_PATH')) {
             $autoloadManager->addFolder(MODEL_PATH);
         }
