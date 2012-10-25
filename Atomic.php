@@ -126,6 +126,16 @@ class Atomic {
     {
         //Loading routes
         $this->loadRoutes();
+        if(array_key_exists('InitializerHandler', self::$system)) {
+            if (!empty(self::$system['InitializerHandler']) &&
+                class_exists(self::$system['InitializerHandler'])) {
+                $initalizr = new self::$system['InitializerHandler'];
+                if ($initalizr instanceof InitializerHandler) {
+                    $initalizr->setConfig($this->config);
+                    $initalizr->execute($this);
+                }
+            }
+        }
         //Get the route destination
         $url = urldecode($_SERVER['REQUEST_URI']);
         try{
@@ -219,5 +229,9 @@ class Atomic {
            self::$PhpPhantInstance = new self($bootstrap);
         }
         return self::$PhpPhantInstance;
+    }
+
+    public function getRouterManager() {
+        return $this->router;
     }
 }

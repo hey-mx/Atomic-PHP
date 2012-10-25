@@ -6,5 +6,5 @@ abstract class InitializerHandlerAbstract implements IConfigurable {
         $this->config = $configObject;
     }
 
-    abstract public function execute();
+    abstract public function execute($app);
 }
