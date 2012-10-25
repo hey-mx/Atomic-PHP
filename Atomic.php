@@ -134,10 +134,9 @@ class Atomic {
             }catch (RouteNotFoundException $e) {
                 throw new AtPageNotFoundException("Route Not Found", 0);
             }
-            $class = $foundRoute->getMapClass();
-            if(strpos($class, '_') !== FALSE) {
+
                 $elements = explode('_', $class);
-                array_walk($elements, function($key, $value) use (&$elements){
+                array_walk($elements, function($value, $key) use (&$elements){
                     $elements[$key] = ucfirst($elements[$key]);
                 });
                 $class = join('', $elements);
