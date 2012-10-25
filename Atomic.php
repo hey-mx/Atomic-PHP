@@ -130,7 +130,7 @@ class Atomic {
             if (!empty(self::$system['InitializerHandler']) &&
                 class_exists(self::$system['InitializerHandler'])) {
                 $initalizr = new self::$system['InitializerHandler'];
-                if ($initalizr instanceof InitializerHandler) {
+                if ($initalizr instanceof InitializerHandlerAbstract) {
                     $initalizr->setConfig($this->config);
                     $initalizr->execute($this);
                 }
