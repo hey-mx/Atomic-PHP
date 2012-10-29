@@ -197,7 +197,7 @@ class Atomic {
             } else {
                 $action = (!isset(self::$system['action_prefix']) ? '' : 
                 self::$system['action_prefix']) . Index;
-                if(method_exists($content, $action)) {
+                if(!method_exists($content, $action)) {
                     $content->$action();
                 } else {
                     throw new AtPageNotFoundException('Action Not Found', 3);   
