@@ -65,5 +65,10 @@ abstract class AtController
         if(array_key_exists($name, $this->helpers))
             return $this->helpers[$name];
     }
+
+    public function __toString()
+    {
+        return get_class($this);
+    }
 }
 ?>
