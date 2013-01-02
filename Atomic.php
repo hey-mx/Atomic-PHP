@@ -60,6 +60,8 @@ class Atomic {
         }
         $autoloadManager->excludeFolder(CORE_LIB_PATH . DIRECTORY_SEPARATOR . 
             'activerecord');
+        $autoloadManager->excludeFolder(CORE_LIB_PATH . DIRECTORY_SEPARATOR .
+            'smarty');
         $autoloadManager->excludeNamspace('activerecord');
         $autoloadManager->register();
         spl_autoload_register("Atomic::activerecord_lib_autoload");
