@@ -42,6 +42,7 @@ class Atomic {
         require_once CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'PHP-Autoload-Manager'
             . DIRECTORY_SEPARATOR . 'autoloadManager.php';
         $autoloadManager = new AutoloadManager();
+        $autoloadManager->setSaveFile('/tmp/autoload.php');
         $autoloadManager->addFolder(CORE_PATH);
         $autoloadManager->addFolder(CORE_LIB_PATH);
         $autoloadManager->addFolder(LIB_PATH);
