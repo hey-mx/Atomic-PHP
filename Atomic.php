@@ -59,6 +59,8 @@ class Atomic {
                 $autoloadManager->addFolder($path);
             }
         }
+        $autoloadManager->excludeFolder(CORE_LIB_PATH . DIRECTORY_SEPARATOR . 
+            'activerecord');
         $autoloadManager->register();
         spl_autoload_register("Atomic::activerecord_lib_autoload");
         if(isset($db) && defined('MODEL_PATH')) {
