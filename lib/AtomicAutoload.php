@@ -30,7 +30,7 @@ class AtomicAutoload extends autoloadManager {
     public function loadClass($className)
     {
         $className = strtolower($className);
-        if (strpos($className,'\\') === true) {
+        if (strpos($className,'\\') !== false) {
             $namespace = explode('\\', $className);
             if (in_array($namespace[0], $this->_excludedNamespaces)) {
                 return;
