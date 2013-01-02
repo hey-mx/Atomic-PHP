@@ -36,6 +36,6 @@ class AtomicAutoload extends autoloadManager {
                 return;
             }
         }
-        parent::loadClass($classname);
+        parent::loadClass($className);
     }
 }

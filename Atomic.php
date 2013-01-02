@@ -39,9 +39,8 @@ class Atomic {
             define('CUSTOM_PATHS', serialize($system['custom_paths']));
         }
         self::$system = $system;
-        require_once CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'PHP-Autoload-Manager'
-            . DIRECTORY_SEPARATOR . 'autoloadManager.php';
-        $autoloadManager = new AutoloadManager();
+        require_once CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'AtomicAutoload.php';
+        $autoloadManager = new AtomicAutoload();
         if (array_key_exists('autoload_file', $system)) {
             $autoloadManager->setSaveFile($system['autoload_file']);
         }
@@ -61,6 +60,7 @@ class Atomic {
         }
         $autoloadManager->excludeFolder(CORE_LIB_PATH . DIRECTORY_SEPARATOR . 
             'activerecord');
+        $autoloadManager->excludeNamspace('activerecord');
         $autoloadManager->register();
         spl_autoload_register("Atomic::activerecord_lib_autoload");
         if(isset($db) && defined('MODEL_PATH')) {
