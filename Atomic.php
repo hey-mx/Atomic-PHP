@@ -70,6 +70,9 @@ class Atomic {
             require_once $lib_path . 'Utils.php';
             require_once $lib_path . 'Exceptions.php';
             $this->cfgAR = ActiveRecord\Config::instance();
+            if (array_key_exists('ar_cache', $system)) {
+                $this->cfgAr->set_cache($system['ar_cache']);
+            }
             try {
                 $this->cfgAR->set_connections($db);
             } catch(ActiveRecord\DatabaseException $e) {
