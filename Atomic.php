@@ -64,8 +64,8 @@ class Atomic {
             'smarty');
         $autoloadManager->excludeNamspace('activerecord');
         $autoloadManager->register();
-        spl_autoload_register("Atomic::activerecord_lib_autoload");
         if(isset($db) && defined('MODEL_PATH')) {
+            spl_autoload_register("Atomic::activerecord_lib_autoload");
             $lib_path = CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'activerecord/';
             require_once $lib_path . 'Utils.php';
             require_once $lib_path . 'Exceptions.php';
