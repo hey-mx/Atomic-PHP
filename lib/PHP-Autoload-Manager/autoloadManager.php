@@ -246,6 +246,10 @@ class autoloadManager
      */
     public function loadClass($className)
     {
+        if (!is_array($this->_classes)) {
+            $this->_classes  = array();
+            $this->generate();
+        }
         $className = strtolower($className);
         // check if the class already exists in the cache file
         $loaded = $this->checkClass($className, $this->_classes);
