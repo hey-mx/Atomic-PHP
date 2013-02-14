@@ -27,7 +27,7 @@ abstract class AtController
         $vars['module'] = $this;
         $this->view->GetSmartyInstance()->assign($vars);
         if(!$display) {
-            return $this->view->GetSmartyInstance()->fetch();
+            return $this->view->GetSmartyInstance()->fetch($template);
         } else {
             $this->view->GetSmartyInstance()->display($template);
         }
