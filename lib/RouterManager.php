@@ -9,7 +9,7 @@ final class RouterManager {
         $this->phpRouterInstance = new Router();
         $defaultModule = $configSystem->Value('default_module');
         if (!empty($defaultModule)) {
-            $rootRoute = new Route('/');
+            $rootRoute = new PhpRoute('/');
             $rootRoute->setMapClass($defaultModule)
                 ->setMapMethod('index');
             $this->phpRouterInstance->addRoute('default', $rootRoute);

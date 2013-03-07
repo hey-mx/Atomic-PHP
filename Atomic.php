@@ -101,7 +101,12 @@ class Atomic {
         if(array_key_exists('routes', self::$system)) {
             $count = 0;
             foreach(self::$system['routes'] as $route => $info) {
-                $customRoute = new Route($route);
+                $customRoute = new PhpRoute($route);
+                if(array_key_exists('static', $info)) {
+                        foreach($info['static'] as $key => $value) {
+                            $customRoute->addStaticElement($key, $value);
+                        }
+                    }
                 if(array_key_exists('content', $info)) {
                     $customRoute->setMapClass($info['content']);
                     if(array_key_exists('action', $info)) {
