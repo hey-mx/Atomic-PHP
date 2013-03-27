@@ -30,6 +30,12 @@ final class ViewManager {
                 array($customPlugins)
             ));
         }
+
+        $delimiters = $configSystem->Value('smarty_delimiters');
+        if (is_array($delimiters) && !empty($delimiters)) {
+            $this->smartyInstance->left_delimiter = $delimiters['left'];
+            $this->smartyInstance->right_delimiter = $delimiters['right'];
+        }
     }
 
     public static function GetInstance(Core $configSystem) {
