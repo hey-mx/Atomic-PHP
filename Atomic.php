@@ -232,7 +232,7 @@ class Atomic {
             }
         } catch(AtRedirectRequestException $e) {
             $type = $e->getType();
-            if (!empty($type) {
+            if (!empty($type)) {
                 header($type);
             }
             header('Location: ' . $e->getLocation());
