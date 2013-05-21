@@ -33,14 +33,17 @@ abstract class AtController
         }
     }
 
-    protected function redirect($module, $action='index', $arguments=array(), $rootSite='')
+    protected function redirect($module, $action='index', $arguments=array(), $type = '')
     {
-        $url = $rootSite . '/' . $module . '/' . $action;
+        $url = '/' . $module . '/' . $action;
         if(!empty($arguments)) {
             $url .= join('/', $arguments);
         }
-        header('Location: ' . $url);
-        exit;
+        $this->redirectToUrl($url, $type);
+    }
+
+    protected function redirectToUrl($url, $type='') {
+        throw new AtRedirectRequestException($url, $type);
     }
 
     protected function LoadHelper($helperName, $accessName)
