@@ -231,8 +231,9 @@ class Atomic {
                 throw new Exception($e->getMessage(), $e->getCode());
             }
         } catch(AtRedirectRequestException $e) {
-            if (!empty($e->getType()) {
-                header($e->getType());
+            $type = $e->getType();
+            if (!empty($type) {
+                header($type);
             }
             header('Location: ' . $e->getLocation());
         }
