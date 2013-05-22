@@ -6,6 +6,8 @@ class Atomic {
     private static $system;
     private $config;
     private $cfgAR;
+    private $controller;
+    private $action;
 
     public static function activerecord_lib_autoload($class_name)
     {
@@ -176,6 +178,7 @@ class Atomic {
             if(!class_exists($class)) {
                 throw new AtPageNotFoundException("Class Not Found", 1);
             }
+            $this->controller = $class;
             $content = new $class;
             if(!$content instanceof AtController) {
                   throw new AtPageNotFoundException('The request is no a valid Content. Nothing to do.', 2);
@@ -193,6 +196,7 @@ class Atomic {
             } else {
                 $method = ucfirst($method);
             }
+            $this->action = $method;
             $action = $method;
             if(!empty($action))
             {
@@ -254,5 +258,13 @@ class Atomic {
 
     public function getRouterManager() {
         return $this->router;
+    }
+
+    public function getController() {
+        return $this->controller;
+    }
+
+    public function getAction() {
+        return $this->action;
     }
 }
