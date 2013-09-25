@@ -37,7 +37,7 @@ abstract class AtController
     {
         $url = '/' . $module . '/' . $action;
         if(!empty($arguments)) {
-            $url .= join('/', $arguments);
+            $url .= '/'. join('/', $arguments);
         }
         $this->redirectToUrl($url, $type);
     }
