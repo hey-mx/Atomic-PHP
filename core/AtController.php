@@ -38,7 +38,9 @@ abstract class AtController
         if ($cacheTime == 0 || $clearCache) {
             $this->ClearViewCache($template, $cacheId);
         }
-        $this->view->GetSmartyInstance()->setCacheLifetime($cacheTime);
+        if ($cacheTime > 0) {
+            $this->view->GetSmartyInstance()->setCacheLifetime($cacheTime);
+        }
         $vars['module'] = array('value' => $this, 'onviewcache' => true);
         foreach($vars as $key => $value) {
             if (is_array($value) && array_key_exists('onviewcache', $value)) {
