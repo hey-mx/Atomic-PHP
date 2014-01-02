@@ -35,11 +35,14 @@ abstract class AtController
     protected function Display($template, $vars=array(), $display=true, $cacheTime = 0, $cacheId = '',
         $clearCache = false)
     {
-        if ($cacheTime == 0 || $clearCache) {
+        if ($cacheTime > 0 && $clearCache) {
             $this->ClearViewCache($template, $cacheId);
         }
         if ($cacheTime > 0) {
+            $this->view->GetSmartyInstance()->caching = 1;
             $this->view->GetSmartyInstance()->setCacheLifetime($cacheTime);
+        } else {
+            $this->view->GetSmartyInstance()->caching = 0;
         }
         $vars['module'] = array('value' => $this, 'onviewcache' => true);
         foreach($vars as $key => $value) {
