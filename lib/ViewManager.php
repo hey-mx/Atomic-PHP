@@ -12,8 +12,10 @@ final class ViewManager {
     private function CreateSmartyInstance($usingCache, $templateCache='') {
         if ($usingCache && isset($this->smartyInstance['cache'])) {
             $smartyInstance = $this->smartyInstance['cache'];
+            echo "<pre>Regresando Instance de cache</pre>";
         } elseif (!$usingCache && isset($this->smartyInstance['default'])) {
             $smartyInstance = $this->smartyInstance['default'];
+            echo "<pre>Regresando Instance default</pre>";
         } else {
             $isUsingCache = !empty($templateCache) && $usingCache;
             $smartyInstance = new Smarty();
@@ -48,8 +50,11 @@ final class ViewManager {
             }
             if ($isUsingCache) {
                 $this->smartyInstance['cache'] = $smartyInstance;
+                echo "<pre>Seteando Instance de cache</pre>";
             } else {
                 $this->smartyInstance['default'] = $smartyInstance;
+                echo "<pre>Seteando Instance default</pre>";
+
             }
         }
         return $smartyInstance;
