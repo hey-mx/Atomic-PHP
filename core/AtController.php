@@ -42,7 +42,6 @@ abstract class AtController
             $this->view->GetSmartyInstance()->setCacheLifetime($cacheTime);
         }
         $vars['module'] = array('value' => $this, 'onviewcache' => true);
-        $this->view->GetSmartyInstance()->assign($vars);
         foreach($vars as $key => $value) {
             if (is_array($value) && array_key_exists('onviewcache', $value)) {
                 $onCache = $value['onviewcache'];
@@ -51,7 +50,7 @@ abstract class AtController
                 if ($realValue != null) {
                     $this->view->GetSmartyInstance()->assign($key, $realValue, $onCache);
                 }
-            } elseif ($cacheTime == 0 || $this->IsViewOnCache($template, $cacheId)) {
+            } elseif ($cacheTime == 0 || !$this->IsViewOnCache($template, $cacheId)) {
                 $this->view->GetSmartyInstance()->assign($key, $value);
             }
         }
