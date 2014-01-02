@@ -35,7 +35,7 @@ abstract class AtController
     protected function Display($template, $vars=array(), $display=true, $cacheTime = 0, $cacheId = '',
         $clearCache = false)
     {
-        if ($cacheTime > 0 && $clearCache) {
+        if ($cacheTime == 0 || $clearCache) {
             $this->ClearViewCache($template, $cacheId);
         }
         if ($cacheTime > 0) {
