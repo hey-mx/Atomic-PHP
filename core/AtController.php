@@ -16,12 +16,12 @@ abstract class AtController
     }
     
     protected function IsViewOnCache($template, $cacheId='') {
-        return $this->view->GetSmartyInstance()->isCached($template, 
+        return $this->view->GetSmartyInstance(true)->isCached($template, 
             (!empty($cacheId) ? $cacheId : null));
     }
 
     protected function ClearViewCache($template, $cacheId='') {
-        $this->view->GetSmartyInstance()->clearCache($template, 
+        $this->view->GetSmartyInstance(true)->clearCache($template, 
                 (!empty($cacheId) ? $cacheId : null));
     }
 
@@ -32,36 +32,34 @@ abstract class AtController
             ->GetPhpRouterInstance();
     }
 
-    protected function Display($template, $vars=array(), $display=true, $cacheTime = 0, $cacheId = '',
-        $clearCache = false)
+    protected function Display($template, $vars=array(), $display=true, $usingCache=false, $cacheId = '',
+        $cacheTime = 0, $clearCache = false)
     {
-        if ($cacheTime > 0 && $clearCache) {
+        if ($usingCache && $cacheTime > 0) {
+            $this->view->GetSmartyInstance($usingCache)->setCacheLifetime($cacheTime);
+        }
+        if ($usingCache && $clearCache) {
             $this->ClearViewCache($template, $cacheId);
         }
-        if ($cacheTime > 0) {
-            $this->view->GetSmartyInstance()->caching = 1;
-            $this->view->GetSmartyInstance()->setCacheLifetime($cacheTime);
-        } else {
-            $this->view->GetSmartyInstance()->caching = 0;
-        }
+        
         $vars['module'] = array('value' => $this, 'onviewcache' => true);
         foreach($vars as $key => $value) {
-            if (is_array($value) && array_key_exists('onviewcache', $value)) {
-                $onCache = $value['onviewcache'];
+            $noCache = true;
+            $realValue = null;
+            if (is_array($value) && array_key_exists('nocache', $value)) {
+                $noCache = $value['nocache'];
                 $realValue = array_key_exists('value', $value)
                     ? $value['value'] : null;
-                if ($realValue != null) {
-                    $this->view->GetSmartyInstance()->assign($key, $realValue, $onCache);
-                }
-            } elseif ($cacheTime == 0 || !$this->IsViewOnCache($template, $cacheId)) {
-                $this->view->GetSmartyInstance()->assign($key, $value);
+            } else {
+                $realValue = $value;
             }
+            $this->view->GetSmartyInstance($usingCache)->assign($key, $realValue, $noCache);
         }
         if(!$display) {
-            return $this->view->GetSmartyInstance()->fetch($template,
+            return $this->view->GetSmartyInstance($usingCache)->fetch($template,
                 (!empty($cacheId) && $cacheTime > 0 ? $cacheId : null ));
         } else {
-            $this->view->GetSmartyInstance()->display($template, 
+            $this->view->GetSmartyInstance($usingCache)->display($template, 
                 (!empty($cacheId) && $cacheTime > 0 ? $cacheId : null ));
         }
     }
