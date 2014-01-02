@@ -44,7 +44,7 @@ abstract class AtController
         
         $vars['module'] = array('value' => $this, 'nocache' => false);
         foreach($vars as $key => $value) {
-            $noCache = true;
+            $noCache = false;
             $realValue = null;
             if (is_array($value) && array_key_exists('nocache', $value)) {
                 $noCache = $value['nocache'];
