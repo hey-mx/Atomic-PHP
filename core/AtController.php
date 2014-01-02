@@ -42,7 +42,7 @@ abstract class AtController
             $this->ClearViewCache($template, $cacheId);
         }
         
-        $vars['module'] = array('value' => $this, 'onviewcache' => true);
+        $vars['module'] = array('value' => $this, 'nocache' => false);
         foreach($vars as $key => $value) {
             $noCache = true;
             $realValue = null;
