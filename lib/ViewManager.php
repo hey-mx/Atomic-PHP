@@ -22,7 +22,6 @@ final class ViewManager {
         $templateCache = $configSystem->Value('template_cache_dir');
         if(!empty($templateCache)) {
             $this->smartyInstance->setCacheDir($templateCache);
-            $this->smartyInstance->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
         }
         $customPlugins = $configSystem->Value('smarty_plugins');
         if (!empty($customPlugins)) {
