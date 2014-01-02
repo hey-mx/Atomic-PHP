@@ -57,10 +57,10 @@ abstract class AtController
         }
         if(!$display) {
             return $this->view->GetSmartyInstance($usingCache)->fetch($template,
-                (!empty($cacheId) && $cacheTime > 0 ? $cacheId : null ));
+                (!empty($cacheId) && $usingCache ? $cacheId : null ));
         } else {
             $this->view->GetSmartyInstance($usingCache)->display($template, 
-                (!empty($cacheId) && $cacheTime > 0 ? $cacheId : null ));
+                (!empty($cacheId) && $usingCache ? $cacheId : null ));
         }
     }
 
