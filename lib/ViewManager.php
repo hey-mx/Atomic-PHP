@@ -10,10 +10,10 @@ final class ViewManager {
     }
 
     private function CreateSmartyInstance($usingCache, $templateCache='') {
-        if ($usingCache && isset(self::$smartyInstance['cache'])) {
-            $smartyInstance = self::$smartyInstance['cache'];
-        } elseif (!$usingCache && isset(self::$smartyInstance['default'])) {
-            $smartyInstance = self::$smartyInstance['default'];
+        if ($usingCache && isset($this->smartyInstance['cache'])) {
+            $smartyInstance = $this->smartyInstance['cache'];
+        } elseif (!$usingCache && isset($this->smartyInstance['default'])) {
+            $smartyInstance = $this->smartyInstance['default'];
         } else {
             $isUsingCache = !empty($templateCache) && $usingCache;
             $smartyInstance = new Smarty();
@@ -47,9 +47,9 @@ final class ViewManager {
                 $smartyInstance->right_delimiter = $delimiters['right'];
             }
             if ($isUsingCache) {
-                self::$smartyInstance['cache'] = $smartyInstance;
+                $this->smartyInstance['cache'] = $smartyInstance;
             } else {
-                self::$smartyInstance['default'] = $smartyInstance;
+                $this->smartyInstance['default'] = $smartyInstance;
             }
         }
         return $smartyInstance;
