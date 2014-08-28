@@ -65,6 +65,7 @@ SQL;
 		$c->nullable		= ($column['not_nullable'] ? false : true);
 		$c->pk				= ($column['pk'] ? true : false);
 		$c->auto_increment	= false;
+		$c->comment         = ''; // Not implemented for this adapter
 
 		if (substr($column['type'],0,9) == 'timestamp')
 		{

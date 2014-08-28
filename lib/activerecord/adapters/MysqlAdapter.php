@@ -22,7 +22,7 @@ class MysqlAdapter extends Connection
 
 	public function query_column_info($table)
 	{
-		return $this->query("SHOW COLUMNS FROM $table");
+		return $this->query("SHOW FULL COLUMNS FROM $table");
 	}
 
 	public function query_for_tables()
@@ -38,6 +38,7 @@ class MysqlAdapter extends Connection
 		$c->nullable		= ($column['null'] === 'YES' ? true : false);
 		$c->pk				= ($column['key'] === 'PRI' ? true : false);
 		$c->auto_increment	= ($column['extra'] === 'auto_increment' ? true : false);
+		$c->comment         = $column['comment'];
 
 		if ($column['type'] == 'timestamp' || $column['type'] == 'datetime')
 		{

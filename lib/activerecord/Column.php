@@ -101,6 +101,12 @@ class Column
 	 * @var boolean
 	 */
 	public $sequence;
+	
+	/**
+	 * Column Comments
+	 * @var string
+	 */
+	public $comment;
 
 	/**
 	 * Casts a value to the column's type.

@@ -106,6 +106,7 @@ class OciAdapter extends Connection
 		$c->nullable		= $column['nullable'] == 'Y' ? true : false;
 		$c->pk				= $column['pk'] == 'P' ? true : false;
 		$c->length			= $column['data_length'];
+		$c->comment         = ''; // Not implemented for this adapter
 	
 		if ($column['data_type'] == 'timestamp')
 			$c->raw_type = 'datetime';
