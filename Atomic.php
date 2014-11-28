@@ -215,7 +215,7 @@ class Atomic {
                 }
             } else {
                 $action = (!isset(self::$system['action_prefix']) ? '' : 
-                self::$system['action_prefix']) . Index;
+                self::$system['action_prefix']) . 'Index';
                 $content->$action();
             }
         } catch(ActiveRecord\DatabaseException $e) {
