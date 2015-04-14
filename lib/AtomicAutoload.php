@@ -41,19 +41,18 @@ class AtomicAutoload extends autoloadManager {
      */
     public function loadClass($className)
     {
-        echo '<pre>';
-        print_r($this->_excludedNamespaces);
-        print_r($this->_excludedClasses);
-        echo '</pre>', PHP_EOL;
         $className = strtolower($className);
-        if (strpos($className,'\\') !== false) {
+        if (in_array($className, $this->_excludedClasses)) {
+            echo 'Ignorando clase ', $className, '<br>', PHP_EOL;
+            return;
+        } else if (strpos($className,'\\') !== false) {
             $namespace = explode('\\', $className);
-            if (in_array($namespace[0], $this->_excludedNamespaces)
-                || in_array($className, $this->_excludedClasses)) {
-                echo 'Excluyendo ',$className, '<br>', PHP_EOL; 
+            if (in_array($namespace[0], $this->_excludedNamespaces)) {
+                echo 'Ignorando namespace ', $namespace[0], '<br>', PHP_EOL;
                 return;
             }
         }
+        echo 'Cargando clase ', $className, '<br>', PHP_EOL;
         parent::loadClass($className);
     }
 }
