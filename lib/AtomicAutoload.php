@@ -46,6 +46,7 @@ class AtomicAutoload extends autoloadManager {
             $namespace = explode('\\', $className);
             if (in_array($namespace[0], $this->_excludedNamespaces)
                 || in_array($className, $this->_excludedClasses)) {
+                echo 'Excluyendo ',$className, '<br>', PHP_EOL; 
                 return;
             }
         }
