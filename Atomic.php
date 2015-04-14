@@ -46,13 +46,15 @@ class Atomic {
         if (array_key_exists('autoload_file', $system)) {
             $autoloadManager->setSaveFile($system['autoload_file']);
         }
-        if (array_key_exists('excludeNameSpaces', $system)) {
+        if (array_key_exists('excludeNameSpaces', $system) && 
+            !empty($system['excludeNameSpaces'])) {
             foreach ($system['excludeNameSpaces'] as $namespace) {
                 $autoloadManager->excludeNamspace($namespace);
             }
         }
-        if (array_key_exists('excludeClasess', $system)) {
-            foreach ($system['excludeClasess'] as $classNameExclude) {
+        if (array_key_exists('excludeClasses', $system) && 
+            !empty($system['excludeClasses'])) {
+            foreach ($system['excludeClasses'] as $classNameExclude) {
                 $autoloadManager->excludeClass($classNameExclude);
             }
         }
