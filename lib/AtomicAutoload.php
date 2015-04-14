@@ -41,6 +41,10 @@ class AtomicAutoload extends autoloadManager {
      */
     public function loadClass($className)
     {
+        echo '<pre>';
+        print_r($this->_excludedNamespaces);
+        print_r($this->_excludedClasses);
+        echo '</pre>', PHP_EOL;
         $className = strtolower($className);
         if (strpos($className,'\\') !== false) {
             $namespace = explode('\\', $className);
