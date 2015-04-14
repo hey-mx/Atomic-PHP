@@ -46,6 +46,21 @@ class Atomic {
         if (array_key_exists('autoload_file', $system)) {
             $autoloadManager->setSaveFile($system['autoload_file']);
         }
+        if (array_key_exists('excludeNameSpaces', $system)) {
+            foreach ($system['excludeNameSpaces'] as $namespace) {
+                $autoloadManager->excludeNamspace($namespace);
+            }
+        }
+        if (array_key_exists('excludeClasess', $system)) {
+            foreach ($system['excludeClasess'] as $classNameExclude) {
+                $autoloadManager->excludeClass($classNameExclude);
+            }
+        }
+        if (array_key_exists('autoloadExcludeFolder', $system)) {
+            foreach ($system['autoloadExcludeFolder'] as $excludeFolder) {
+                $autoloadManager->excludeFolder($excludeFolder);
+            }
+        }
         $autoloadManager->addFolder(CORE_PATH);
         $autoloadManager->addFolder(CORE_LIB_PATH);
         $autoloadManager->addFolder(LIB_PATH);
