@@ -430,7 +430,6 @@ class autoloadManager
         $file = $this->getSaveFile();
         $tmpFile = dirname($file) . DIRECTORY_SEPARATOR . uniqid('autoload_');
         file_put_contents($tmpFile, $content);
-        echo 'Move ' . $tmpFile . ' to ' . $file;
         rename($tmpFile, $file);
     }
 
