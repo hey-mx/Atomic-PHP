@@ -432,7 +432,11 @@ class autoloadManager
 
         // Export array
         $content .= 'return ' . var_export($classes, true) . ';';
-        file_put_contents($this->getSaveFile(), $content);
+        $file = $this->getSaveFile();
+        $tmpFile = dirname($file) . DIRECTORY_SEPARATOR . uniqid('autoload_');
+        file_put_contents($tmpFile, $content);
+        echo 'Move ' . $tmpFile . ' to ' . $file;
+        rename($tmpFile, $file);
     }
 
     /**
