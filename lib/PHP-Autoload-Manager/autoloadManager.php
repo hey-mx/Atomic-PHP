@@ -136,12 +136,7 @@ class autoloadManager
         $this->_saveFile = $pathToFile;
         if ($this->_saveFile && file_exists($this->_saveFile))
         {
-            $verify = shell_exec('php -l ' . $this->_saveFile);
-            if (stripos($verify, 'Errors parsing') === False) {
-                $this->_classes = include($this->_saveFile);
-            } else {
-                trigger_error($verify, E_USER_WARNING);
-            }
+            $this->_classes = include($this->_saveFile);
         }
     }
 
