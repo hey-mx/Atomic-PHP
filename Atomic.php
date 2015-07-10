@@ -181,6 +181,7 @@ class Atomic {
             }catch (RouteNotFoundException $e) {
                 throw new AtPageNotFoundException("Route Not Found", 0);
             }
+            DebugHelper::debugWithCookie('jc_debug', $foundRoute);
             $class = $foundRoute->getMapClass();
             if(strpos($class, '_') !== FALSE) {
                 $elements = explode('_', $class);
