@@ -181,7 +181,6 @@ class Atomic {
             }catch (RouteNotFoundException $e) {
                 throw new AtPageNotFoundException("Route Not Found", 0);
             }
-            DebugHelper::debugWithCookie('jc_debug', $foundRoute);
             $class = $foundRoute->getMapClass();
             if(strpos($class, '_') !== FALSE) {
                 $elements = explode('_', $class);
@@ -195,7 +194,7 @@ class Atomic {
             $class .= (!isset(self::$system['controller_suffix']) ? '' :
                 self::$system['controller_suffix']);
             Profile::pushProfile('404', 'Getting class name');
-            if(!class_exists($class)) {
+            if(!class_exists($class, True)) {
                 Profile::pushProfile('404', 'Throw not found');
                 throw new AtPageNotFoundException("Class Not Found", 1);
             }
