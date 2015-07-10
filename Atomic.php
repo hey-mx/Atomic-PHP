@@ -197,6 +197,7 @@ class Atomic {
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
             if(!class_exists($class)) {
+                Profile::pushProfile('404', 'Throw not found');
                 throw new AtPageNotFoundException("Class Not Found", 1);
             }
             $this->controller = $class;
