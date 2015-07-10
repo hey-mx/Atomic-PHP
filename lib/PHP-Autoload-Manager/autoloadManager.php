@@ -214,7 +214,6 @@ class autoloadManager
      */
     public function classExists($className)
     {
-        var_dump($this->_classes);
         return self::CLASS_EXISTS === $this->checkClass($className, $this->_classes);
     }
 
