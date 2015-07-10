@@ -254,6 +254,7 @@ class Atomic {
             if(array_key_exists('PageNotFoundHandler', self::$system)) {
                 $class = self::$system['PageNotFoundHandler'];
                 $handler = new $class();
+                Profile::pushProfile('404', 'Loading PageNotFoundHandler');
                 $handler->exception($e, $this);
             } else {
                 throw new Exception($e->getMessage(), $e->getCode());
