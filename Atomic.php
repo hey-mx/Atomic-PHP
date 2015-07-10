@@ -195,12 +195,12 @@ class Atomic {
             $class .= (!isset(self::$system['controller_suffix']) ? '' :
                 self::$system['controller_suffix']);
             Profile::pushProfile('404', 'Getting class name');
-            $method = $foundRoute->getMapMethod();
-            $arguments = $foundRoute->getMapArguments();
             if(!class_exists($class)) {
                 Profile::pushProfile('404', 'Throw not found');
                 throw new AtPageNotFoundException("Class Not Found", 1);
             }
+            $method = $foundRoute->getMapMethod();
+            $arguments = $foundRoute->getMapArguments();
             $this->controller = $class;
             $content = new $class;
             if(!$content instanceof AtController) {
