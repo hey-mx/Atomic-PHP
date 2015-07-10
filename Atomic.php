@@ -160,6 +160,7 @@ class Atomic {
     {
         //Loading routes
         $this->loadRoutes();
+        Profile::pushProfile('404', 'Loading Routes');
         if(array_key_exists('InitializerHandler', self::$system)) {
             if (!empty(self::$system['InitializerHandler']) &&
                 class_exists(self::$system['InitializerHandler'])) {
@@ -169,12 +170,14 @@ class Atomic {
                     $initalizr->execute($this);
                 }
             }
+            Profile::pushProfile('404', 'Run initializer');
         }
         //Get the route destination
         $url = urldecode($_SERVER['REQUEST_URI']);
         try{
             try {
                 $foundRoute = $this->router->findRoute($url);
+                Profile::pushProfile('404', 'Looking for the route');
             }catch (RouteNotFoundException $e) {
                 throw new AtPageNotFoundException("Route Not Found", 0);
             }
@@ -190,6 +193,7 @@ class Atomic {
             }
             $class .= (!isset(self::$system['controller_suffix']) ? '' :
                 self::$system['controller_suffix']);
+            Profile::pushProfile('404', 'Getting class name');
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
             if(!class_exists($class)) {
@@ -204,6 +208,7 @@ class Atomic {
             {
                 $content->setConfigInstance($this->config);
             }
+            Profile::pushProfile('404', 'Loading Controller');
             if(strpos($method, '_') !== FALSE) {
                 $elements = explode('_', $method);
                 array_walk($elements, function($key, $value) use (&$elements){
@@ -215,6 +220,7 @@ class Atomic {
             }
             $this->action = $method;
             $action = $method;
+            Profile::pushProfile('404', 'Getting method');
             if(!empty($action))
             {
                 $action = (!isset(self::$system['action_prefix']) ? '' : 
@@ -235,6 +241,7 @@ class Atomic {
                 self::$system['action_prefix']) . 'Index';
                 $content->$action();
             }
+            Profile::pushProfile('404', 'Execute method');
         } catch(ActiveRecord\DatabaseException $e) {
             if(array_key_exists('DatabaseErrorHandler', self::$system)) {
                 $class = self::$system['DatabaseErrorHandler'];
