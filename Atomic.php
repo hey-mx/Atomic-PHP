@@ -195,7 +195,7 @@ class Atomic {
             $class .= (!isset(self::$system['controller_suffix']) ? '' :
                 self::$system['controller_suffix']);
             Profile::pushProfile('404', 'Getting class name');
-            if(!$this->autoloadManager->classExists($class)) {
+            if(!class_exists($class)) {
                 Profile::pushProfile('404', 'Throw not found');
                 throw new AtPageNotFoundException("Class Not Found", 1);
             }
