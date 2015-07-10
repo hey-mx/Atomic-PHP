@@ -297,6 +297,7 @@ class autoloadManager
      */
     private function checkClass($className, array $classes)
     {
+        var_dump($classes);
         if (isset($classes[$className]))
         {
             require $classes[$className];
