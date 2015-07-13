@@ -8,6 +8,7 @@ class Atomic {
     private $cfgAR;
     private $controller;
     private $action;
+    private $autoloadManager;
 
     public static function activerecord_lib_autoload($class_name)
     {
@@ -42,47 +43,47 @@ class Atomic {
         }
         self::$system = $system;
         require_once CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'AtomicAutoload.php';
-        $autoloadManager = new AtomicAutoload();
+        $this->autoloadManager = new AtomicAutoload();
         if (array_key_exists('autoload_file', $system)) {
-            $autoloadManager->setSaveFile($system['autoload_file']);
+            $this->autoloadManager->setSaveFile($system['autoload_file']);
         }
         if (array_key_exists('excludeNameSpaces', $system) && 
             !empty($system['excludeNameSpaces'])) {
             foreach ($system['excludeNameSpaces'] as $namespace) {
-                $autoloadManager->excludeNamspace($namespace);
+                $this->autoloadManager->excludeNamspace($namespace);
             }
         }
         if (array_key_exists('excludeClasses', $system) && 
             !empty($system['excludeClasses'])) {
             foreach ($system['excludeClasses'] as $classNameExclude) {
-                $autoloadManager->excludeClass($classNameExclude);
+                $this->autoloadManager->excludeClass($classNameExclude);
             }
         }
         if (array_key_exists('autoloadExcludeFolder', $system)) {
             foreach ($system['autoloadExcludeFolder'] as $excludeFolder) {
-                $autoloadManager->excludeFolder($excludeFolder);
+                $this->autoloadManager->excludeFolder($excludeFolder);
             }
         }
-        $autoloadManager->addFolder(CORE_PATH);
-        $autoloadManager->addFolder(CORE_LIB_PATH);
-        $autoloadManager->addFolder(LIB_PATH);
-        $autoloadManager->addFolder(MODULE_PATH);
-        $autoloadManager->addFolder(HELPERS_PATH);
+        $this->autoloadManager->addFolder(CORE_PATH);
+        $this->autoloadManager->addFolder(CORE_LIB_PATH);
+        $this->autoloadManager->addFolder(LIB_PATH);
+        $this->autoloadManager->addFolder(MODULE_PATH);
+        $this->autoloadManager->addFolder(HELPERS_PATH);
         if (defined('MODEL_PATH')) {
-            $autoloadManager->addFolder(MODEL_PATH);
+            $this->autoloadManager->addFolder(MODEL_PATH);
         }
         if(defined('CUSTOM_PATHS')) {
             $customPaths = unserialize(CUSTOM_PATHS);
             foreach ($customPaths as $key => $path) {
-                $autoloadManager->addFolder($path);
+                $this->autoloadManager->addFolder($path);
             }
         }
-        $autoloadManager->excludeFolder(CORE_LIB_PATH . DIRECTORY_SEPARATOR . 
+        $this->autoloadManager->excludeFolder(CORE_LIB_PATH . DIRECTORY_SEPARATOR . 
             'activerecord');
-        $autoloadManager->excludeFolder(CORE_LIB_PATH . DIRECTORY_SEPARATOR .
+        $this->autoloadManager->excludeFolder(CORE_LIB_PATH . DIRECTORY_SEPARATOR .
             'smarty');
-        $autoloadManager->excludeNamspace('activerecord');
-        $autoloadManager->register();
+        $this->autoloadManager->excludeNamspace('activerecord');
+        $this->autoloadManager->register();
         if(isset($db) && defined('MODEL_PATH')) {
             spl_autoload_register("Atomic::activerecord_lib_autoload");
             $lib_path = CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'activerecord/';
@@ -192,8 +193,14 @@ class Atomic {
                 self::$system['controller_suffix']);
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
-            if(!class_exists($class)) {
-                throw new AtPageNotFoundException("Class Not Found", 1);
+            if (isset(self::$system['autoload_file'])) {
+                if (!$this->autoloadManager->classExists(strtolower($class))) {
+                    throw new AtPageNotFoundException("Class Not Found", 1);
+                }
+            } else {
+                if(!class_exists($class)) {
+                    throw new AtPageNotFoundException("Class Not Found", 1);
+                }
             }
             $this->controller = $class;
             $content = new $class;
