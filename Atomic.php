@@ -193,14 +193,8 @@ class Atomic {
                 self::$system['controller_suffix']);
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
-            if (isset(self::$system['autoload_file'])) {
-                if (!$this->autoloadManager->classExists(strtolower($class))) {
-                    throw new AtPageNotFoundException("Class Not Found", 1);
-                }
-            } else {
-                if(!class_exists($class)) {
-                    throw new AtPageNotFoundException("Class Not Found", 1);
-                }
+            if(!class_exists($class)) {
+                throw new AtPageNotFoundException("Class Not Found", 1);
             }
             $this->controller = $class;
             $content = new $class;
