@@ -191,8 +191,7 @@ class Atomic {
             }
             $class .= (!isset(self::$system['controller_suffix']) ? '' :
                 self::$system['controller_suffix']);
-            DebugHelper::debug($system);
-            if (isset($system['autoload_file'])) {
+            if (isset(self::$system['autoload_file'])) {
                 if(!$this->autoloadManager->classExists(strtolower($class))) {
                     throw new AtPageNotFoundException("Class Not Found", 1);
                 }
