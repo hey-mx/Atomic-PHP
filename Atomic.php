@@ -196,7 +196,7 @@ class Atomic {
                     throw new AtPageNotFoundException("Class Not Found", 1);
                 }
             } else {
-                if(class_exists($class)) {
+                if(!class_exists($class)) {
                     throw new AtPageNotFoundException("Class Not Found", 1);
                 }
             }
