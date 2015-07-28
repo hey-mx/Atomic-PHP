@@ -285,4 +285,8 @@ class Atomic {
     public function getAction() {
         return $this->action;
     }
+
+    public function getAutoloadManager() {
+        return $this->autoloadManager;
+    }
 }
