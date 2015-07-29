@@ -171,9 +171,13 @@ class Atomic {
                 }
             }
         }
-        //Get the route destination
-        $url = urldecode($_SERVER['REQUEST_URI']);
         try{
+            //Get the route destination
+            if (isset($_SERVER['REQUEST_URI'])) {
+                $url = urldecode($_SERVER['REQUEST_URI']);
+            } else {
+                throw new AtPageNotFoundException("Route Not Found", 0);
+            }
             try {
                 $foundRoute = $this->router->findRoute($url);
             }catch (RouteNotFoundException $e) {
@@ -193,8 +197,17 @@ class Atomic {
                 self::$system['controller_suffix']);
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
-            if(!class_exists($class)) {
-                throw new AtPageNotFoundException("Class Not Found", 1);
+            if (isset(self::$system['autoload_file']) && 
+                    (isset(self::$system['check_not_found_module_cache']) && 
+                        self::$system['check_not_found_module_cache'])) {
+                $classNameCache = strtolower($class);
+                if (!$this->autoloadManager->classExists($classNameCache)) {
+                    throw new AtPageNotFoundException("Class Not Found", 1);
+                }
+            } else {
+                if(!class_exists($class)) {
+                    throw new AtPageNotFoundException("Class Not Found", 1);
+                }
             }
             $this->controller = $class;
             $content = new $class;
@@ -250,7 +263,7 @@ class Atomic {
                 $handler = new $class();
                 $handler->exception($e, $this);
             } else {
-                throw new Exception($e->getMessage(), $e->getCode());
+                throw new AtRouteNotFound($e->getMessage(), $e->getCode());
             }
         } catch(AtRedirectRequestException $e) {
             $type = $e->getType();
