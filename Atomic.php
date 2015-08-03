@@ -201,7 +201,7 @@ class Atomic {
                     (isset(self::$system['check_not_found_module_cache']) && 
                         self::$system['check_not_found_module_cache'])) {
                 $classNameCache = strtolower($class);
-                if (!$this->autoloadManager->classExists($classNameCache)) {
+                if (!$this->autoloadManager->classExists($classNameCache, True)) {
                     throw new AtPageNotFoundException("Class Not Found", 1);
                 }
             } else {
