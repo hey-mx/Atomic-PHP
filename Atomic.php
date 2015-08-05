@@ -208,7 +208,7 @@ class Atomic {
                         $classNameCache, True)) {
                     $endTime = DebugHelper::getMicrotimeFloat();
                     echo '<pre>Usando Cache' , PHP_EOL, 
-                    DebugHelper::getExecutionTime($startTime, $endTime), '</pre>';
+                    $startTime, '-', $endTime, '</pre>';
                     exit();
                     throw new AtPageNotFoundException("Class Not Found", 1);
                 }
