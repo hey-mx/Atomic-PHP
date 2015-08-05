@@ -201,26 +201,13 @@ class Atomic {
                 self::$system['controller_suffix']);
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
-            if (isset(self::$system['autoload_file'])) {
-                $classNameCache = strtolower($class);
-                $startTime = DebugHelper::getMicrotimeFloat();
-                if (!$this->autoloadManager->classExists(
-                        $classNameCache, True)) {
-                    $endTime = DebugHelper::getMicrotimeFloat();
-                    echo '<pre>Usando Cache' , PHP_EOL, 
-                    $startTime, '-', $endTime, '</pre>';
-                    exit();
-                    throw new AtPageNotFoundException("Class Not Found", 1);
-                }
-            } else {
-                $startTime = DebugHelper::getMicrotimeFloat();
-                if(!class_exists($class)) {
-                    $endTime = DebugHelper::getMicrotimeFloat();
-                    echo '<pre>Usando class_exists', PHP_EOL,
-                    DebugHelper::getExecutionTime($startTime, $endTime), '</pre>';
-                    exit();
-                    throw new AtPageNotFoundException("Class Not Found", 1);
-                }
+            $startTime = DebugHelper::getMicrotimeFloat();
+            if(!class_exists($class)) {
+                $endTime = DebugHelper::getMicrotimeFloat();
+                echo '<pre>Usando class_exists', PHP_EOL,
+                DebugHelper::getExecutionTime($startTime, $endTime), '</pre>';
+                exit();
+                throw new AtPageNotFoundException("Class Not Found", 1);
             }
             $this->controller = $class;
             $content = new $class;
