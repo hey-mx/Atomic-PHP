@@ -211,6 +211,7 @@ class Atomic {
                 $endTime = DebugHelper::getMicrotimeFloat();
                 echo '<pre>' , 
                     DebugHelper::getExecutionTime($startTime, $endTime), '</pre>';
+                exit();
             } else {
                 if(!class_exists($class)) {
                     throw new AtPageNotFoundException("Class Not Found", 1);
