@@ -303,7 +303,7 @@ class autoloadManager
         	    ? self::CLASS_EXISTS : self::CLASS_NOT_FOUND;
         } elseif (isset($classes[$className])) {
             echo '<pre>';
-            print_r($classes);
+            print_r($className);
             echo '</pre>';
             require $classes[$className];
             return self::CLASS_EXISTS;
