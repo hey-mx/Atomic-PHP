@@ -212,9 +212,10 @@ class autoloadManager
      * @param string $className Name of the class
      * @return bool true if class exists, false otherwise.
      */
-    public function classExists($className)
+    public function classExists($className, $lightWay=False)
     {
-        return self::CLASS_EXISTS === $this->checkClass($className, $this->_classes);
+        return self::CLASS_EXISTS === $this->checkClass($className, $this->_classes,
+        	$lightWay);
     }
 
     /**
@@ -294,15 +295,15 @@ class autoloadManager
      *                              (there have been an attempt done)
      *                              0 if the class does not exist
      */
-    private function checkClass($className, array $classes)
+    private function checkClass($className, array $classes, $lightWay=False)
     {
-        if (isset($classes[$className]))
-        {
+        if (isset($classes[$className]) && $lightWay) {
+        	return file_exists($classes[$className])
+        	    ? self::CLASS_EXISTS : self::CLASS_NOT_FOUND;
+        } elseif (isset($classes[$className])) {
             require $classes[$className];
             return self::CLASS_EXISTS;
-        }
-        elseif (array_key_exists($className, $classes))
-        {
+        } elseif (array_key_exists($className, $classes)) {
             return self::CLASS_IS_NULL;
         }
         return self::CLASS_NOT_FOUND;
