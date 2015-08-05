@@ -46,7 +46,7 @@ class Atomic {
         $this->autoloadManager = new AtomicAutoload();
         if (isset(self::$system['autoload_file'])) {
             $this->autoloadManager->setScanOptions(
-                autoloadManager::SCAN_ONCE | autoloadManager::SCAN_CACHE);
+                autoloadManager::SCAN_NEVER | autoloadManager::SCAN_CACHE);
         }
         if (array_key_exists('autoload_file', $system)) {
             $this->autoloadManager->setSaveFile($system['autoload_file']);
