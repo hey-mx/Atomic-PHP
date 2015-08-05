@@ -45,7 +45,8 @@ class Atomic {
         require_once CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'AtomicAutoload.php';
         $this->autoloadManager = new AtomicAutoload();
         if (isset(self::$system['autoload_file'])) {
-            $this->autoloadManager->setScanOptions(autoloadManager::SCAN_CACHE);
+            $this->autoloadManager->setScanOptions(
+                autoloadManager::SCAN_ONCE | autoloadManager::SCAN_CACHE);
         }
         if (array_key_exists('autoload_file', $system)) {
             $this->autoloadManager->setSaveFile($system['autoload_file']);
