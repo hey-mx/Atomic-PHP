@@ -298,6 +298,7 @@ class autoloadManager
     private function checkClass($className, array $classes, $lightWay=False)
     {
         if (isset($classes[$className]) && $lightWay) {
+            DebugHelper::debug('Buscando archivo ' . $classes[$className]);
         	return file_exists($classes[$className])
         	    ? self::CLASS_EXISTS : self::CLASS_NOT_FOUND;
         } elseif (isset($classes[$className])) {

@@ -203,7 +203,6 @@ class Atomic {
             $arguments = $foundRoute->getMapArguments();
             if (isset(self::$system['autoload_file'])) {
                 $classNameCache = strtolower($class);
-                DebugHelper::debug('Usando cache de clases');
                 if (!$this->autoloadManager->classExists(
                         $classNameCache, True)) {
                     throw new AtPageNotFoundException("Class Not Found", 1);
