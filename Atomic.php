@@ -44,6 +44,9 @@ class Atomic {
         self::$system = $system;
         require_once CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'AtomicAutoload.php';
         $this->autoloadManager = new AtomicAutoload();
+        if (isset(self::$system['autoload_file'])) {
+            $this->autoloadManager->setScanOptions(autoloadManager::SCAN_CACHE);
+        }
         if (array_key_exists('autoload_file', $system)) {
             $this->autoloadManager->setSaveFile($system['autoload_file']);
         }
@@ -197,11 +200,10 @@ class Atomic {
                 self::$system['controller_suffix']);
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
-            if (isset(self::$system['autoload_file']) && 
-                    (isset(self::$system['check_not_found_module_cache']) && 
-                        self::$system['check_not_found_module_cache'])) {
+            if (isset(self::$system['autoload_file'])) {
                 $classNameCache = strtolower($class);
-                if (!$this->autoloadManager->classExists($classNameCache, True)) {
+                if ($this->autoloadManager->classExists(
+                        $classNameCache, True) == 1) {
                     throw new AtPageNotFoundException("Class Not Found", 1);
                 }
             } else {
