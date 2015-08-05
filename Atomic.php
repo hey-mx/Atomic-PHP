@@ -201,12 +201,7 @@ class Atomic {
                 self::$system['controller_suffix']);
             $method = $foundRoute->getMapMethod();
             $arguments = $foundRoute->getMapArguments();
-            $startTime = DebugHelper::getMicrotimeFloat();
             if(!class_exists($class)) {
-                $endTime = DebugHelper::getMicrotimeFloat();
-                echo '<pre>Usando class_exists', PHP_EOL,
-                DebugHelper::getExecutionTime($startTime, $endTime), '</pre>';
-                exit();
                 throw new AtPageNotFoundException("Class Not Found", 1);
             }
             $this->controller = $class;
