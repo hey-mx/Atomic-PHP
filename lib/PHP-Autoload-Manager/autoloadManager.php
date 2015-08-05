@@ -247,7 +247,6 @@ class autoloadManager
      */
     public function loadClass($className)
     {
-        print_r($this->_classes);
         if (!is_array($this->_classes)) {
             $this->_classes  = array();
             $this->generate();
