@@ -93,11 +93,11 @@ class Atomic {
         $this->autoloadManager->addFolder(CORE_PATH);
         $this->autoloadManager->addFolder(CORE_LIB_PATH);
         $this->autoloadManager->addFolder(LIB_PATH);
-        //$this->autoloadManager->addFolder(MODULE_PATH);
+        $this->autoloadManager->addFolder(MODULE_PATH);
         $this->autoloadManager->addFolder(HELPERS_PATH);
-        if (defined('MODEL_PATH')) {
+        /*if (defined('MODEL_PATH')) {
             $this->autoloadManager->addFolder(MODEL_PATH);
-        }
+        }*/
         if(defined('CUSTOM_PATHS')) {
             $customPaths = unserialize(CUSTOM_PATHS);
             foreach ($customPaths as $key => $path) {
