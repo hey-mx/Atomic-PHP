@@ -42,6 +42,28 @@ class Atomic {
             define('CUSTOM_PATHS', serialize($system['custom_paths']));
         }
         self::$system = $system;
+        if(isset($db) && defined('MODEL_PATH')) {
+            spl_autoload_register("Atomic::activerecord_lib_autoload");
+            $lib_path = CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'activerecord/';
+            require_once $lib_path . 'Utils.php';
+            require_once $lib_path . 'Exceptions.php';
+            $this->cfgAR = ActiveRecord\Config::instance();
+            if (array_key_exists('ar_cache', $system)) {
+                $this->cfgAr->set_cache($system['ar_cache']);
+            }
+            try {
+                $this->cfgAR->set_connections($db);
+            } catch(ActiveRecord\DatabaseException $e) {
+                if(array_key_exists('DatabaseErrorHandler', self::$system)) {
+                    $class = self::$system['DatabaseErrorHandler'];
+                    $handler = new $class();
+                    $handler->exceptionTrigger($this->cfgAR, $e);
+                } else {
+                    echo "Database Error";
+                }
+            }
+            $this->cfgAR->set_model_directory(MODEL_PATH);
+        }
         require_once CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'AtomicAutoload.php';
         $this->autoloadManager = new AtomicAutoload();
         if (isset(self::$system['autoload_file'])) {
@@ -71,7 +93,7 @@ class Atomic {
         $this->autoloadManager->addFolder(CORE_PATH);
         $this->autoloadManager->addFolder(CORE_LIB_PATH);
         $this->autoloadManager->addFolder(LIB_PATH);
-        $this->autoloadManager->addFolder(MODULE_PATH);
+        //$this->autoloadManager->addFolder(MODULE_PATH);
         $this->autoloadManager->addFolder(HELPERS_PATH);
         if (defined('MODEL_PATH')) {
             $this->autoloadManager->addFolder(MODEL_PATH);
@@ -88,28 +110,6 @@ class Atomic {
             'smarty');
         $this->autoloadManager->excludeNamspace('activerecord');
         $this->autoloadManager->register();
-        if(isset($db) && defined('MODEL_PATH')) {
-            spl_autoload_register("Atomic::activerecord_lib_autoload");
-            $lib_path = CORE_LIB_PATH . DIRECTORY_SEPARATOR . 'activerecord/';
-            require_once $lib_path . 'Utils.php';
-            require_once $lib_path . 'Exceptions.php';
-            $this->cfgAR = ActiveRecord\Config::instance();
-            if (array_key_exists('ar_cache', $system)) {
-                $this->cfgAr->set_cache($system['ar_cache']);
-            }
-            try {
-                $this->cfgAR->set_connections($db);
-            } catch(ActiveRecord\DatabaseException $e) {
-                if(array_key_exists('DatabaseErrorHandler', self::$system)) {
-                    $class = self::$system['DatabaseErrorHandler'];
-                    $handler = new $class();
-                    $handler->exceptionTrigger($this->cfgAR, $e);
-                } else {
-                    echo "Database Error";
-                }
-            }
-            $this->cfgAR->set_model_directory(MODEL_PATH);
-        }
         $this->config = Core::getInstance(self::$system);
     }
 
