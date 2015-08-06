@@ -69,8 +69,6 @@ class Atomic {
         if (isset(self::$system['autoload_file'])) {
             $this->autoloadManager->setScanOptions(
                 autoloadManager::SCAN_NEVER | autoloadManager::SCAN_CACHE);
-        }
-        if (array_key_exists('autoload_file', $system)) {
             $this->autoloadManager->setSaveFile($system['autoload_file']);
         }
         if (array_key_exists('excludeNameSpaces', $system) && 
